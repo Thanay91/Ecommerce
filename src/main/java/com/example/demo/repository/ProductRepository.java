@@ -1,0 +1,23 @@
+package com.example.demo.repository;
+
+
+import com.example.demo.models.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    @Query("select p from Product p")
+    public Optional<List<Product>> getAllBy();
+
+    @Query("select p from Product p where p.id = ?1")
+    Optional<Product> getProductsById(Long id);
+
+    @Query(value = "select * from Product p limit :limitResult", nativeQuery = true)
+    public List<Product> getAllBy(int limitResult);
+}
