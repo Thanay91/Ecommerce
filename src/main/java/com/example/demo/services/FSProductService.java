@@ -8,13 +8,12 @@ import com.example.demo.models.Rating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Primary
@@ -38,16 +37,29 @@ public class FSProductService implements IProductService{
         return product;
     }
     @Override
-    public List<Product> getAllProducts() throws ProductNotFoundException {
-        List<Product> allProducts = new ArrayList<>();
-        ProductResponseDTO[] response = restTemplate.getForObject("https://fakestoreapi.com/products",
-                ProductResponseDTO[].class);
-
-        for(ProductResponseDTO dto : response){
-            Product p = getProductFromResponseDTO(dto);
-            allProducts.add(p);
+    public List<Product> getAllProducts(String sortType, Integer limit) throws ProductNotFoundException {
+        List<Product> products = new ArrayList<>();
+        if(limit != null){
+            products =  this.getLimitedProduct(limit);
         }
-        return allProducts;
+        else{
+            ProductResponseDTO[] response = restTemplate.getForObject("https://fakestoreapi.com/products",
+                    ProductResponseDTO[].class);
+
+            for(ProductResponseDTO dto : response){
+                Product p = getProductFromResponseDTO(dto);
+                products.add(p);
+            }
+        }
+        if(sortType !=null){
+            if(sortType.equals("asc")){
+                Collections.sort(products, (a, b) -> (int)(a.getId()-b.getId()));
+            }
+            else if(sortType.equals("desc")){
+                Collections.sort(products, (a,b) -> (int)(b.getId()-a.getId()));
+            }
+        }
+        return products;
     }
 
     @Override
@@ -72,19 +84,5 @@ public class FSProductService implements IProductService{
             limitedProducts.add(product);
         }
         return  limitedProducts;
-    }
-
-    @Override
-    public List<Product> getSortedProduct(String sortType) {
-        List<Product> arrangedProducts = new ArrayList<>();
-        String endPoint = "https://fakestoreapi.com/products?sort=" + sortType;
-        System.out.println(endPoint);
-        ProductResponseDTO[] responseDTOS = restTemplate.getForObject(endPoint, ProductResponseDTO[].class);
-
-        for(ProductResponseDTO eachResponse : responseDTOS){
-            Product p = getProductFromResponseDTO(eachResponse);
-            arrangedProducts.add(p);
-        }
-        return arrangedProducts;
     }
 }

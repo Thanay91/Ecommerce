@@ -25,36 +25,9 @@ public class ProductController {
                                                         @RequestParam(required = false) Integer limit) throws ProductNotFoundException{
         ResponseEntity responseEntity;
         List<Product> products = new ArrayList<>();
-        if(limit!=null && sort != null){
-            products =  productService.getLimitedProduct(limit);
-            if(sort.equals("asc")){
-                Collections.sort(products, (a,b) -> (int)(a.getId()-b.getId()));
-            }
-            else if(sort.equals("desc")){
-                Collections.sort(products, (a,b) -> (int)(b.getId()-a.getId()));
-            }
-            responseEntity = new ResponseEntity(products, HttpStatus.OK);
-            return responseEntity;
-        }
-        if(limit !=null){
-            products = productService.getLimitedProduct(limit);
-            responseEntity = new ResponseEntity(products, HttpStatus.OK);
-            return responseEntity;
-        }
-        if(sort!=null ){
-            products = productService.getAllProducts();
-            if(sort.equals("asc")){
-                Collections.sort(products, (a,b) -> (int)(a.getId()-b.getId()));
-            }
-            else if(sort.equals("desc")){
-                Collections.sort(products, (a,b) -> (int)(b.getId()-a.getId()));
-            }
-            responseEntity = new ResponseEntity(products, HttpStatus.OK);
-            return responseEntity;
-        }
-        products = productService.getAllProducts();
+        products = productService.getAllProducts(sort, limit);
         responseEntity = new ResponseEntity(products, HttpStatus.OK);
-        return null;
+        return responseEntity;
     }
 
     @GetMapping("/{id}")

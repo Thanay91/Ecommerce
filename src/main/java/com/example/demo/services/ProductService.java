@@ -20,7 +20,7 @@ public class ProductService implements IProductService{
     ProductRepository productRepository;
 
     @Override
-    public List<Product> getAllProducts() throws ProductNotFoundException {
+    public List<Product> getAllProducts(String sortType, Integer limit) throws ProductNotFoundException {
         Optional<List<Product>> allProductsOptional = productRepository.getAllBy();
         if(allProductsOptional.isEmpty()){
             throw new ProductNotFoundException("Product list is empty");
@@ -49,8 +49,4 @@ public class ProductService implements IProductService{
         return products;
     }
 
-    @Override
-    public List<Product> getSortedProduct(String sortType) {
-        return null;
-    }
 }
