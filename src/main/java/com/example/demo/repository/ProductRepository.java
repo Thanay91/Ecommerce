@@ -20,4 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "select * from Product p limit :limitResult", nativeQuery = true)
     public List<Product> getAllBy(int limitResult);
+
+    @Query(value = "select distinct category from Product p", nativeQuery = true)
+    public List<String> getAllCategories();
 }

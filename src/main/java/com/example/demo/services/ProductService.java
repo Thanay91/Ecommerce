@@ -64,4 +64,9 @@ public class ProductService implements IProductService{
         return products;
     }
 
+    @Override
+    public List<String> getAllCategories() {
+        return productRepository.getAllCategories();
+    }
+
 }

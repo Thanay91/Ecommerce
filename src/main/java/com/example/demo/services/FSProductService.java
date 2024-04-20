@@ -86,4 +86,16 @@ public class FSProductService implements IProductService{
         }
         return  limitedProducts;
     }
+
+    @Override
+    public List<String> getAllCategories() {
+        List<String> categories = new ArrayList<>();
+        String[] response = restTemplate.getForObject("https://fakestoreapi.com/products/categories",
+                String[].class);
+        for(String cat: response){
+            categories.add(cat);
+
+        }
+        return categories;
+    }
 }

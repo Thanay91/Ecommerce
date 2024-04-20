@@ -13,4 +13,6 @@ public interface IProductService {
 
     List<Product> getLimitedProduct(int numbers);
 
+    List<String> getAllCategories();
+
 }

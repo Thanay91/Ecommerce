@@ -38,17 +38,13 @@ public class ProductController {
         return responseEntity;
     }
 
-    /*@GetMapping(params = "limit")
-    public List<Product> getLimitedProduct(@RequestParam int limit){
-        List<Product> products = productService.getLimitedProduct(limit);
-        return products;
+    @GetMapping("/categories")
+    public ResponseEntity<List<String>> getAllCategories(){
+        List<String> categories = productService.getAllCategories();
+        ResponseEntity responseEntity;
+        responseEntity = new ResponseEntity(categories, HttpStatus.OK);
+        return responseEntity;
     }
-
-    @GetMapping(params = "sortType")
-    public List<Product> getSortedProduct(@RequestParam String sortType){
-        List<Product> arrangedProducts = productService.getSortedProduct(sortType);
-        return arrangedProducts;
-    }*/
 
 
 }
