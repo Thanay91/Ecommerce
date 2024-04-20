@@ -46,5 +46,11 @@ public class ProductController {
         return responseEntity;
     }
 
+    @GetMapping("/categories/{category}")
+    public List<Product> getInCategory(@PathVariable("category") String category){
+        return productService.getInCategory(category);
+    }
+
+
 
 }

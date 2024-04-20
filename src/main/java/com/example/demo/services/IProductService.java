@@ -15,4 +15,6 @@ public interface IProductService {
 
     List<String> getAllCategories();
 
+    List<Product> getInCategory(String category);
+
 }

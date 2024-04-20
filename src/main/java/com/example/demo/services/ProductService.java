@@ -69,4 +69,10 @@ public class ProductService implements IProductService{
         return productRepository.getAllCategories();
     }
 
+    @Override
+    public List<Product> getInCategory(String category) {
+        List<Product> products = productRepository.getProductsByCategory(category);
+        return products;
+    }
+
 }
