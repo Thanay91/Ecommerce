@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.dtos.ProductResponseDTO;
 import com.example.demo.exceptions.ProductNotFoundException;
 import com.example.demo.models.Product;
 import com.example.demo.repository.ProductRepository;
@@ -8,12 +9,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-//@Primary
-//@Qualifier("ProductService")
+@Primary
+@Qualifier("ProductService")
 
 public class ProductService implements IProductService{
     @Autowired
@@ -21,14 +24,26 @@ public class ProductService implements IProductService{
 
     @Override
     public List<Product> getAllProducts(String sortType, Integer limit) throws ProductNotFoundException {
-        Optional<List<Product>> allProductsOptional = productRepository.getAllBy();
-        if(allProductsOptional.isEmpty()){
-            throw new ProductNotFoundException("Product list is empty");
+        List<Product> allProducts = new ArrayList<>();
+        if(limit != null){
+            allProducts =  this.getLimitedProduct(limit);
         }
         else{
-            List<Product> products = allProductsOptional.get();
-            return products;
+            Optional<List<Product>> allProductsOptional = productRepository.getAllBy();
+            if(allProductsOptional.isEmpty()){
+                throw new ProductNotFoundException("Product not found");
+            }
+            allProducts = allProductsOptional.get();
         }
+        if(sortType !=null){
+            if(sortType.equals("asc")){
+                Collections.sort(allProducts, (a, b) -> (int)(a.getId()-b.getId()));
+            }
+            else if(sortType.equals("desc")){
+                Collections.sort(allProducts, (a,b) -> (int)(b.getId()-a.getId()));
+            }
+        }
+        return allProducts;
     }
 
     @Override

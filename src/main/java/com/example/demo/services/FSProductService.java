@@ -13,11 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.Array;
 import java.util.*;
 
 @Service
-@Primary
-@Qualifier("FSProductService")
+//@Primary
+//@Qualifier("FSProductService")
 public class FSProductService implements IProductService{
 
     @Autowired
@@ -75,7 +76,7 @@ public class FSProductService implements IProductService{
 
     @Override
     public List<Product> getLimitedProduct(int limit) {
-        List<Product> limitedProducts = new ArrayList<>();
+        List<Product> limitedProducts= new ArrayList<>();
         String endPoint = "https://fakestoreapi.com/products"+"?limit=" + limit;
         ProductResponseDTO[] response = restTemplate.getForObject(endPoint, ProductResponseDTO[].class);
 
