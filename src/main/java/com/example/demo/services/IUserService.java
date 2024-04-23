@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface IUserService {
 
-    public List<User> getAllUsers();
+    public List<User> getAllUsers(Integer limit, String sortType);
+
+    public User getUserById(Long id);
 
 }

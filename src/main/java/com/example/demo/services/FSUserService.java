@@ -49,9 +49,19 @@ public class FSUserService implements IUserService{
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(Integer limit, String sortType) {
         List<User> users = new ArrayList<>();
-        UserResponseDTO[] response = restTemplate.getForObject("https://fakestoreapi.com/users",
+        String endPoint="https://fakestoreapi.com/users";
+        if(limit != null && sortType!=null){
+            endPoint = endPoint + "?limit=" + limit + "&sort="+sortType;
+        }
+        else if(limit != null){
+            endPoint = endPoint + "?limit=" + limit;
+        }
+        else if(sortType != null){
+            endPoint = endPoint + "?sort=" + sortType;
+        }
+        UserResponseDTO[] response = restTemplate.getForObject(endPoint,
                 UserResponseDTO[].class);
 
         for(UserResponseDTO res: response){
@@ -62,4 +72,12 @@ public class FSUserService implements IUserService{
         return users;
 
     }
+
+    @Override
+    public User getUserById(Long id) {
+        UserResponseDTO userResponse = restTemplate.getForObject("https://fakestoreapi.com/users/" + id,
+                UserResponseDTO.class);
+        User user = getUserObjectFromResponseDTO(userResponse);
+        return user;
+        }
 }
