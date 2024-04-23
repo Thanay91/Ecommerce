@@ -17,4 +17,8 @@ public interface IProductService {
 
     List<Product> getInCategory(String category);
 
+    Product addProduct(Product product);
+
+    Product updateProduct(Long id, Product product);
+
 }

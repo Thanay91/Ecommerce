@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Setter
 @Entity
 public class Product extends BaseModel {
-    private Long id;
+
     private String category;
     private String title;
     private double price;
@@ -21,8 +21,9 @@ public class Product extends BaseModel {
     private String image;
 
     //P  :  R
-    //1  :  M
     //1  :  1
+    //M  :  1
     @OneToOne
     public Rating rating;
+
 }

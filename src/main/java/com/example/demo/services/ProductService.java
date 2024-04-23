@@ -15,8 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Primary
-@Qualifier("ProductService")
+//@Primary
+//@Qualifier("ProductService")
 
 public class ProductService implements IProductService{
     @Autowired
@@ -73,6 +73,22 @@ public class ProductService implements IProductService{
     public List<Product> getInCategory(String category) {
         List<Product> products = productRepository.getProductsByCategory(category);
         return products;
+    }
+
+    public Product addProduct(Product product){
+        Product savedProduct = productRepository.save(product);
+        return savedProduct;
+    }
+
+    public Product updateProduct(Long id, Product product){
+        Product toBeUpdated = new Product();
+        toBeUpdated.setId(id);
+        toBeUpdated.setTitle(product.getTitle());
+        toBeUpdated.setRating(product.getRating());
+        toBeUpdated.setImage(product.getImage());
+        toBeUpdated.setDescription(product.getDescription());
+        Product updatedProduct = productRepository.save(toBeUpdated);
+        return updatedProduct;
     }
 
 }

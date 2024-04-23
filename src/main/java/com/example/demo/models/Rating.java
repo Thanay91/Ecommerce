@@ -11,4 +11,5 @@ import org.springframework.context.annotation.Configuration;
 public class Rating extends BaseModel {
     private double rate;
     private int count;
+    
 }

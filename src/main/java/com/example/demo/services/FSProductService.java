@@ -5,6 +5,7 @@ import com.example.demo.dtos.ProductResponseDTO;
 import com.example.demo.exceptions.ProductNotFoundException;
 import com.example.demo.models.Product;
 import com.example.demo.models.Rating;
+import com.example.demo.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -17,8 +18,8 @@ import java.sql.Array;
 import java.util.*;
 
 @Service
-//@Primary
-//@Qualifier("FSProductService")
+@Primary
+@Qualifier("FSProductService")
 public class FSProductService implements IProductService {
 
     @Autowired
@@ -110,5 +111,15 @@ public class FSProductService implements IProductService {
             products.add(p);
         }
         return products;
+    }
+
+    @Override
+    public Product addProduct(Product product) {
+        return null;
+    }
+
+    @Override
+    public Product updateProduct(Long id, Product product) {
+        return null;
     }
 }

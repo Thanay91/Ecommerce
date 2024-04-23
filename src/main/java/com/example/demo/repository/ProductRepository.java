@@ -26,4 +26,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select p from Product p where p.category = ?1")
     public List<Product> getProductsByCategory(String Category);
+
+    public Product save(Product product);
 }
