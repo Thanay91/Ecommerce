@@ -4,6 +4,7 @@ import com.example.demo.dtos.ProductResponseDTO;
 import com.example.demo.exceptions.ProductNotFoundException;
 import com.example.demo.models.Product;
 import com.example.demo.repository.ProductRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -23,7 +24,7 @@ public class ProductService implements IProductService{
     ProductRepository productRepository;
 
     @Override
-    public List<Product> getAllProducts(String sortType, Integer limit) throws ProductNotFoundException {
+    public List<Product> getAllProducts(String sortType, Integer limit, HttpServletRequest requestURL) throws ProductNotFoundException {
         List<Product> allProducts = new ArrayList<>();
         if(limit != null){
             allProducts =  this.getLimitedProduct(limit);

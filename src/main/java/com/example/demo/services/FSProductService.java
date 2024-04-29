@@ -2,10 +2,12 @@ package com.example.demo.services;
 
 import com.example.demo.controller.ProductController;
 import com.example.demo.dtos.ProductResponseDTO;
+import com.example.demo.dtos.UserResponseDTO;
 import com.example.demo.exceptions.ProductNotFoundException;
 import com.example.demo.models.Product;
 import com.example.demo.models.Rating;
 import com.example.demo.models.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -40,26 +42,17 @@ public class FSProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getAllProducts(String sortType, Integer limit) throws ProductNotFoundException {
+    public List<Product> getAllProducts(String sortType, Integer limit, HttpServletRequest requestURL) throws ProductNotFoundException {
         List<Product> products = new ArrayList<>();
-        if (limit != null) {
-            products = this.getLimitedProduct(limit);
-        } else {
-            ProductResponseDTO[] response = restTemplate.getForObject("https://fakestoreapi.com/products",
-                    ProductResponseDTO[].class);
+        String endPoint= "https://fakestoreapi.com/products?"+requestURL.getQueryString();
+        ProductResponseDTO[] response = restTemplate.getForObject(endPoint,
+                ProductResponseDTO[].class);
 
-            for (ProductResponseDTO dto : response) {
-                Product p = getProductFromResponseDTO(dto);
-                products.add(p);
-            }
+        for(ProductResponseDTO res: response){
+            Product product = getProductFromResponseDTO(res);
+            products.add(product);
         }
-        if (sortType != null) {
-            if (sortType.equals("asc")) {
-                Collections.sort(products, (a, b) -> (int) (a.getId() - b.getId()));
-            } else if (sortType.equals("desc")) {
-                Collections.sort(products, (a, b) -> (int) (b.getId() - a.getId()));
-            }
-        }
+
         return products;
     }
 

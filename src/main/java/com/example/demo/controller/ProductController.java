@@ -7,10 +7,12 @@ import com.example.demo.models.Product;
 import com.example.demo.models.Rating;
 import com.example.demo.services.FSProductService;
 import com.example.demo.services.IProductService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.HttpServletBean;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,10 +27,10 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String sort,
-                                                        @RequestParam(required = false) Integer limit) throws ProductNotFoundException{
+                                                        @RequestParam(required = false) Integer limit,
+                                                        HttpServletRequest request) throws ProductNotFoundException{
         ResponseEntity responseEntity;
-        List<Product> products = new ArrayList<>();
-        products = productService.getAllProducts(sort, limit);
+        List<Product> products = productService.getAllProducts(sort, limit, request);
         responseEntity = new ResponseEntity(products, HttpStatus.OK);
         return responseEntity;
     }
