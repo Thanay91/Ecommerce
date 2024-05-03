@@ -20,8 +20,8 @@ import java.sql.Array;
 import java.util.*;
 
 @Service
-@Primary
-@Qualifier("FSProductService")
+//@Primary
+//@Qualifier("FSProductService")
 public class FSProductService implements IProductService {
 
     @Autowired

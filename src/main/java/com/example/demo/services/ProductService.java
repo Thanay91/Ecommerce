@@ -5,9 +5,14 @@ import com.example.demo.exceptions.ProductNotFoundException;
 import com.example.demo.models.Product;
 import com.example.demo.repository.ProductRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import org.hibernate.query.SortDirection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,9 +20,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Service
-//@Primary
-//@Qualifier("ProductService")
+@Primary
+@Qualifier("ProductService")
 
 public class ProductService implements IProductService{
     @Autowired
@@ -25,26 +32,25 @@ public class ProductService implements IProductService{
 
     @Override
     public List<Product> getAllProducts(String sortType, Integer limit, HttpServletRequest requestURL) throws ProductNotFoundException {
-        List<Product> allProducts = new ArrayList<>();
-        if(limit != null){
-            allProducts =  this.getLimitedProduct(limit);
-        }
-        else{
-            Optional<List<Product>> allProductsOptional = productRepository.getAllBy();
-            if(allProductsOptional.isEmpty()){
-                throw new ProductNotFoundException("Product not found");
-            }
-            allProducts = allProductsOptional.get();
-        }
-        if(sortType !=null){
-            if(sortType.equals("asc")){
-                Collections.sort(allProducts, (a, b) -> (int)(a.getId()-b.getId()));
-            }
-            else if(sortType.equals("desc")){
-                Collections.sort(allProducts, (a,b) -> (int)(b.getId()-a.getId()));
-            }
-        }
-        return allProducts;
+       if(limit==null && sortType==null) {
+           Optional<List<Product>> optionalProducts = productRepository.getAllBy();
+           if (optionalProducts.isEmpty()) {
+               throw new ProductNotFoundException("No products in database");
+           }
+           return optionalProducts.get();
+       }
+       Sort sort = Sort.by("id").ascending();
+       if(sortType!=null && sortType.equals("desc")){
+           sort = Sort.by("id").descending();
+       }
+       limit = (limit==null)? 1000: limit;
+       Pageable pageable = PageRequest.of(0,limit,sort);
+       List<Product> products = productRepository.findAllBy(pageable);
+        /*String param = requestURL.getQueryString();
+        Pageable pageable = PageRequest.of(1,limit,Sort.by(sortType));
+        List<Product> products = (List<Product>) productRepository.findAllBy(pageable);
+        return products;*/
+        return products;
     }
 
     @Override
