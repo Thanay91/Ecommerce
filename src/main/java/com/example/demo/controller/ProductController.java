@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.commons.AuthenticationCommons;
 import com.example.demo.dtos.ProductRequestDTO;
 import com.example.demo.dtos.ProductResponseDTO;
 import com.example.demo.exceptions.ProductNotFoundException;
 import com.example.demo.models.Product;
 import com.example.demo.models.Rating;
+import com.example.demo.models.Role;
+import com.example.demo.models.UserDTO;
 import com.example.demo.services.FSProductService;
 import com.example.demo.services.IProductService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,10 +28,13 @@ public class ProductController {
     @Autowired
     private IProductService productService;
 
+
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts(@RequestParam(required = false) String sort,
                                                         @RequestParam(required = false) Integer limit,
-                                                        HttpServletRequest request) throws ProductNotFoundException{
+                                                        HttpServletRequest request
+                                                        ) throws ProductNotFoundException{
+
         ResponseEntity responseEntity;
         List<Product> products = productService.getAllProducts(sort, limit, request);
         responseEntity = new ResponseEntity(products, HttpStatus.OK);
