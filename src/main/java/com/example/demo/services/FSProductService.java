@@ -1,22 +1,14 @@
 package com.example.demo.services;
 
-import com.example.demo.controller.ProductController;
 import com.example.demo.dtos.ProductResponseDTO;
-import com.example.demo.dtos.UserResponseDTO;
 import com.example.demo.exceptions.ProductNotFoundException;
 import com.example.demo.models.Product;
 import com.example.demo.models.Rating;
-import com.example.demo.models.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.sql.Array;
 import java.util.*;
 
 @Service
